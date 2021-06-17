@@ -23,12 +23,19 @@ SABIO webapp code for sharing between server and local machine
 
 # TODO 
 
+ - configure:
+  - Nginx
+  - Gunicorn
+  - iptables
+  - CORS
+  - HTTPS & certbot
 
 
 
 # Frontend
 
 ### Questions: 
+
  - could we make dataset IDs and engine IDs integers (currently strings, sometimes integers)? 
    they'll always be integer in my back-end (indices or hash values, haven't fully decided yet, 
    but either way ints), so that could save me some casting/checking
