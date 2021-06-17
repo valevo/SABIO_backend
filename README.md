@@ -24,11 +24,11 @@ SABIO webapp code for sharing between server and local machine
 # TODO 
 
  - configure:
-  - Nginx
-  - Gunicorn
-  - iptables
-  - CORS
-  - HTTPS & certbot
+   - Nginx
+   - Gunicorn
+   - iptables
+   - CORS
+   - HTTPS & certbot
 
 
 
