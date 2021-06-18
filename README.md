@@ -65,5 +65,9 @@ SABIO webapp code for sharing between server and local machine
 
  - make engineID and datasetID be meaningful names (=strings)
  
+ - precompute results for presets of parameters
 
+ - vocabulary inputs: presets (e.g. Words Matter)
+
+ - easy process for certbot: get certificate for simple page (e.g. at /var/www/html), then relink that to actual page
 
