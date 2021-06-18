@@ -34,7 +34,7 @@ class RandomEngine(Engine):
         detail_scores = None
         return np.random.random(len(objects))*100
     
-    def score_detail(self, object
+#     def score_detail(self, object
     
     def __hash__(self):
         return hash(self.name)
