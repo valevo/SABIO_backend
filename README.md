@@ -48,3 +48,26 @@ SABIO webapp code for sharing between server and local machine
 
 
     
+    
+# Meeting with Werner
+
+ - use hash string instead of /api/v1/ during development
+ - password? authentication
+
+
+ - what about dataes in ranges?
+
+ - new engine: 'lack of information' engine -> e.g. computes the ratio of fields missing
+
+ - hard cap:
+   - for long texts at 1000 characters
+   - for long titles at 100 characters
+
+ - make engineID and datasetID be meaningful names (=strings)
+ 
+ - precompute results for presets of parameters
+
+ - vocabulary inputs: presets (e.g. Words Matter)
+
+ - easy process for certbot: get certificate for simple page (e.g. at /var/www/html), then relink that to actual page
+
