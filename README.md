@@ -7,18 +7,17 @@ SABIO webapp code for sharing between server and local machine
 
 ### NMvW Data:
 
- - have full dumps of tables *whose rows do not need to match w. Objects*:
-   - Classifications 
-   - TextTypes 
-   - ThesXrefTypes
-   - ClassificationNotations
-   - TermTypes 
-   - ThesXrefs 
-   - ObjTitles 
-   - TextEntries 
-   - Terms 
-   - TitleTypes
- - other tables
+
+
+
+### Manuals Used for Server Setup
+
+ - [Certbot](https://certbot.eff.org/lets-encrypt/ubuntufocal-nginx)
+ - [Nginx+Gunicorn+Flask](https://dev.to/chand1012/how-to-host-a-flask-server-with-gunicorn-and-https-942), uses reverse-proxy, i.e. Gunicorn listens on localhost, Nginx forwards to localhost
+
+ - [Nginx tutorial](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy) that could help figure out how to set an internal redirect from / to /api/v0
+
+
 
 
 # TODO 
@@ -26,7 +25,7 @@ SABIO webapp code for sharing between server and local machine
  - configure:
    - Nginx
    - Gunicorn
-   - iptables
+   - **iptables**
    - CORS
    - HTTPS & certbot
 
@@ -70,4 +69,22 @@ SABIO webapp code for sharing between server and local machine
  - vocabulary inputs: presets (e.g. Words Matter)
 
  - easy process for certbot: get certificate for simple page (e.g. at /var/www/html), then relink that to actual page
+
+
+
+
+### Things to Potentially Check
+
+
+ - [uWSGI](https://uwsgi-docs.readthedocs.io/en/latest/index.html0) -> alternative to Gunicorn?
+
+ - [Example NGINX config for Gunicorn](https://docs.gunicorn.org/en/stable/deploy.html) -> could be more efficient & more stable & more secure
+
+ - [Nginx Config Pitfalls](https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/), random list of problems and bad practices
+
+ - [instructions how to do Nginx with Certbot](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04) -> also has instructions how to configure firewall etc
+
+
+
+
 
