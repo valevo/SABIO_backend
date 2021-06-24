@@ -27,10 +27,10 @@
     </head>
     <body>
     <div>
-    <p> <a href="/datasets"> datasets</a></p>
+    <p> <a href="datasets"> datasets</a></p>
     <hr>
     <p> Autocomplete (dataset id: 0)
-         <form action="/datasets/0/autocomplete" method="get">
+         <form action="datasets/0/autocomplete" method="get">
              <select id="attribute" name="attribute">
                 <option value="ObjectName">ObjectName</option>
                 <option value="Location">Location</option>
@@ -40,12 +40,13 @@
         </form>
      </p>
      <hr>
-     <p> <a href="/engines"> Engines </a> </p>
-     <p class="indent"> <a href="/engines/0/html"> engine id:0 = RandomEngine</a></p>
+     <p> <a href="engines"> Engines </a> </p>
+     <p class="indent"> 
+	<a href="engines/0/html"> engine id:0 = RandomEngine</a></p>
     <hr>
         
     <p> Search 
-    <form action="/objects/1/search" method="get">
+    <form action="objects/1/search" method="get">
         keywords: <input type="text" id="object_keywords" name="object_keywords" 
                          value="none">
         <br>

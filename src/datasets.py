@@ -96,8 +96,8 @@ class DatasetParam:
 
 
         
-nmvw_path = "../../../SABIO/REPO/data/tables/Objects.csv.gz"
-nmvw_obj_tbl = pd.read_csv(nmvw_path)
+nmvw_path = "NMvW_data/Objects_1000000.csv.gz"
+nmvw_obj_tbl = pd.read_csv(nmvw_path, low_memory=False)
 
 ObjectName = DatasetParam(0, "ObjectName", "The type of object, e.g. foto.", 
                       control="autocomplete", options={})

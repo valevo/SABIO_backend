@@ -1,32 +1,23 @@
 import flask
-from flask import request
-
-from flask import jsonify as flask_jsonify
+from flask import jsonify, request
 
 app = flask.Flask(__name__)
-# app.config["DEBUG"] = True
+app.config["DEBUG"] = True
 
 import numpy as np
-#from src.datasets import NMvW
-#from src.engines import rand_engine
+from datasets import NMvW
+from engines import rand_engine
 
-#engine_list = sorted([rand_engine])
+engine_list = sorted([rand_engine])
 
-#dataset_list = sorted([NMvW])
+dataset_list = sorted([NMvW])
 
-with open("src/home.html") as handle:
+with open("home.html") as handle:
     home_html = handle.read() 
 
 
-def jsonify(data):
-    response = flask_jsonify(data)
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
-
-
-
 @app.route("/", methods=["GET"])
-# @app.route("/api/v1/", methods=["GET"])
+@app.route("/api/v1/", methods=["GET"])
 def home():
     # prepare data here
     return home_html
@@ -96,5 +87,5 @@ def get_object_details(datasetID, objectID):
 #     return render_template('404.html'), 404
 
 
-#if __name__ == "__main__":
-#    app.run()
+if __name__ == "__main__":
+    app.run()
