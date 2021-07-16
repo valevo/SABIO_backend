@@ -196,7 +196,7 @@ class Result:
     def __init__(self, rows, scores, score_details, min_score, max_score):
         self.attributes = attributes
 
-        self.ids = rows.ObjectID.apply(lambda x: int(x)).astype("string")
+        self.ids = rows.index.astype("string")
         self.titles = rows.Title.fillna("").astype("string")
         self.thumbnails = pd.Series([""]*rows.shape[0]).astype("string")
         
@@ -242,7 +242,7 @@ class Result:
         rng = range(self.values.shape[0]) if (n==-1) else range(n)
         for i in rng:
             obj_dict = {
-                "id": self.ids.iloc[i],
+                "id": self.ids[i],
                 "name": self.titles.iloc[i],
                 "thumbnail_url": self.thumbnails.iloc[i],
                 "values": list(map(lambda x: x if isinstance(x, str) else x.item(), 
