@@ -24,15 +24,20 @@ class Dataset:
         self.available_engines = tuple(available_engines)
         
         self.data = data
+
         self.objectIDs = list(data.ObjectID)
         
     def object_count(self):
         return self.data.shape[0]
-    
-    def __lt__(self, other):
-        if not isinstance(other, Dataset):
-            raise ValueError
-        return self.id < other.id
+
+    def __len__(self):
+        return self.object_count()
+
+
+    # def __lt__(self, other):
+    #    if not isinstance(other, Dataset):
+    #        raise ValueError
+    #    return self.id < other.id
     
     def get_object(self, objectID):
         obj = self.data[self.data.ObjectID == objectID]
@@ -104,7 +109,8 @@ ObjectName = DatasetParam(0, "ObjectName", "The type of object, e.g. foto.",
 
 NMvW_params = (ObjectName,)
 
-NMvW = Dataset(nmvw_obj_tbl, id_=0, name="NMvW/10k", 
+NMvW = Dataset(nmvw_obj_tbl, id_="NMvW Dataset v0, 
+               name="Part of the collection of the Nationaal Museum van Wereldculturen", 
                source_url="https://collectie.wereldculturen.nl", 
                params=NMvW_params,
                available_engines=(rand_engine,))
