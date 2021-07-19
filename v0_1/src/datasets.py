@@ -4,6 +4,9 @@ import numpy as np
 from functools import reduce
 
 
+from src.engines import rand_engine
+
+
 static_field_descriptions = {
     "object_keywords": 'enter keyword', 
     "object_start_date": 'enter start date',
@@ -185,12 +188,14 @@ NMvW = Dataset(df, "NMvW_v0",
                "Nationaal Museum van Wereldculturen 1M",
                "https://collectie.wereldculturen.nl/",
                NMvW_params,
-               available_engines=[])
+               available_engines=[rand_engine])
+
+
+
+
 
 
 attributes = ["BeginISODate", "EndISODate"] + [p.label for p in NMvW_params]
-
-
 
 class Result:
     def __init__(self, rows, scores, score_details, min_score, max_score):
