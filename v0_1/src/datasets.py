@@ -22,9 +22,9 @@ class Dataset:
         self.name = name
         self.source_url = source_url
         
-        self.min_date = df.BeginISODate.min()
-        self.max_date = df.EndISODate.max()
-        self.object_count = df.shape[0]
+        self.min_date = dataframe.BeginISODate.min()
+        self.max_date = dataframe.EndISODate.max()
+        self.object_count = dataframe.shape[0]
         
         self.params = {p.id: p for p in params}
         self.available_engines = {e.id: e for e in available_engines}
