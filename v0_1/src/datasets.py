@@ -75,7 +75,10 @@ class Dataset:
         
         prep_kws = "|".join(kws.lower().replace(", ", ",").split(","))
         
-        does_contain = self.search_texts.str.contains(prep_kws, regex=True)
+        if kws.strip() or not prep_kws:
+            does_contain = [True]*self.object_count
+        else:
+            does_contain = self.search_texts.str.contains(prep_kws, regex=True)
         
         if return_bool_series: return does_contain
         return self.data[does_contain]

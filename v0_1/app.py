@@ -43,7 +43,7 @@ def list_datasets():
     
 @app.route("/datasets/<datasetID>/autocomplete", methods=["GET"])
 def autocomplete(datasetID):
-    param_id = request.args["attribute"]
+    param_id = request.args["param"]
     kw = request.args["keyword"]
     
     d = datasets[datasetID]
