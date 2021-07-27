@@ -1,5 +1,7 @@
 import numpy as np
 
+# from src.datasets import NMvW
+
 class Engine:
     def __init__(self):
 #         self.id  # str
@@ -9,12 +11,14 @@ class Engine:
         pass
     
 class RandomEngine(Engine):
-    def __init__(self, id_, name, params=None):
+    def __init__(self, id_, name, dataset, params=None):
         super().__init__()
         self.name = name
         self.id = id_
         self.min_score = 0. # np.random.random()*100
         self.params = params
+        
+#         self.scores = 
     
     def summary(self):
         return f"""
@@ -28,16 +32,17 @@ class RandomEngine(Engine):
     def score(self, objects, round_to=3, **param_values):
         return np.random.random(len(objects)).round(round_to)
     
+    
     def score_details(self, objects, round_to=3, **param_values):
         descs = objects.Description.fillna("").str.split()
         choices = descs.apply(lambda ls: 
                               dict(zip(
                                   (np.random.choice(ls, size=2) 
-                                   if (ls.shape[0] > 2) else ls),
-                                   np.random.rand(size=2).round(round_to)
+                                   if (len(ls) > 2) else ls),
+                                   np.random.rand(2).round(round_to)
                                                  ))
                              )
-        return choice
+        return choices
         
         
     def __hash__(self):
@@ -84,6 +89,7 @@ nonce_param = EngineParam(id_=0, label="NonceParameter",
                           control="select", default="useless1",
                           options=nonce_opts)
                           
-    
-rand_engine = RandomEngine(id_="RandE_v0", name="RandomEngine/v1.0",
-                           params=[nonce_param])
+# rand_engine = RandomEngine(id_="RandE_v0", 
+#                            name="RandomEngine/v1.0",
+#                            dataset=NMvW,
+#                            params=[nonce_param])

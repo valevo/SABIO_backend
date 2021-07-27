@@ -11,12 +11,26 @@ app.config["DEBUG"] = True
 
 
 import numpy as np
-from src.datasets import NMvW, Result
-from src.engines import rand_engine
+from src.datasets import Dataset, Result, df, NMvW_params
+from src.engines import RandomEngine, nonce_param
 
+
+NMvW = Dataset(df, "NMvW_v0", 
+               "Nationaal Museum van Wereldculturen 1M",
+               "https://collectie.wereldculturen.nl/",
+               NMvW_params,
+               available_engines=[])
 datasets = {NMvW.id:NMvW}
 
+
+rand_engine = RandomEngine(id_="RandE_v0", 
+                           name="RandomEngine/v1.0",
+                           dataset=NMvW,
+                           params=[nonce_param])
 engines = {rand_engine.id: rand_engine}
+NMvW.add_engine(rand_engine)
+
+
 
 
 with open("src/home.html") as handle:
@@ -95,9 +109,9 @@ def search_objects(datasetID):
     eng = engines[engine_id]
 
     scores = eng.score(relevant_data, **engine_params)
-#     details = eng.score_details(relevant_data, **engine_params)
+    details = eng.score_details(relevant_data, **engine_params)
 
-    details = np.asarray(["{}"]*relevant_data.shape[0])
+#     details = np.asarray(["{}"]*relevant_data.shape[0])
     
     in_score_rng = (engine_min <= scores) & (scores <= engine_max)
     
@@ -122,7 +136,9 @@ def search_objects(datasetID):
 @app.route("/objects/<datasetID>/details/<objectID>", methods=["GET"])
 def get_object_details(datasetID, objectID):
     d = datasets[datasetID]
-    return jsonify(d.detail_object(objectID))
+    detail = d.detail_object(objectID)
+        
+    return jsonify(detail)
 
 
 # # COMMENT OUT FOR PRODUCTION

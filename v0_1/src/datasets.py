@@ -4,7 +4,7 @@ import numpy as np
 from functools import reduce
 
 
-from src.engines import rand_engine
+# from src.engines import rand_engine
 
 
 static_field_descriptions = {
@@ -18,9 +18,8 @@ static_field_descriptions = {
 # TODO: cast categorical columns to categorical data type? 
 
 
-
 class Dataset:
-    def __init__(self, dataframe, id_, name, source_url, params, available_engines):
+    def __init__(self, dataframe, id_, name, source_url, params, available_engines=[]):
         self.id = id_
         self.name = name
         self.source_url = source_url
@@ -35,17 +34,23 @@ class Dataset:
         self.data = dataframe
         
         
-        text_search_fields = ["ObjectName", "Title", "Description"]
+        text_search_fields = ["Title", "ObjectName", "Description"]
         self.search_texts = self.data[text_search_fields].fillna("").apply(lambda row: " ".join(row).lower(), axis=1)
         
         
-                       
+    def add_engine(self, engine):
+        self.available_engines.update(
+            {engine.id: engine}
+        )
+                      
     def to_dict(self):
         return {
             "id": self.id,  # Dataset ID
             "name": self.name,  # Dataset name
             "source_url": self.source_url,
             "object_count": self.object_count,
+            "min_date": int(self.min_date),
+            "max_date": int(self.max_date),
             "static_field_descriptions": static_field_descriptions,
             "params": [p.to_dict() for i, p in sorted(self.params.items())],
             "available_engines": [e.id for i, e in sorted(self.available_engines.items())]
@@ -58,7 +63,11 @@ class Dataset:
                     tuple(self.params.keys()), 
                     tuple(self.available_engines.keys())
                     ))
-        
+    
+    def get_obj(self, obj_id):
+        return self.data.loc[obj_id]
+    
+    
     def search(self, kws, start_date, end_date, **obj_params):
         match_kw = self.search_by_keywords(kws)#.astype("bool")
         match_date = self.search_by_date(start_date, end_date)#.astype("bool")
@@ -70,23 +79,29 @@ class Dataset:
         return self.data[match_kw & match_date & param_matches]
         
 
-    def search_by_keywords(self, kws, return_bool_series=True):
-        relevant_fields = "ObjectName", "Title", "Description"
-        
+    def search_by_keywords(self, kws, return_bool_series=True):      
         prep_kws = "|".join(kws.lower().replace(", ", ",").split(","))
         
-        if kws.strip() or not prep_kws:
+        if (not kws.strip()) or (not prep_kws):
             does_contain = [True]*self.object_count
         else:
-            does_contain = self.search_texts.str.contains(prep_kws, regex=True)
+            print("SUBMITTED KEYWORD: ", prep_kws)
+            does_contain = self.search_texts.str.contains(prep_kws, regex=False)
         
         if return_bool_series: return does_contain
         return self.data[does_contain]
     
     
     def search_by_date(self, start_date, end_date, return_bool_series=True):
-        start_year = int(start_date.split("-")[-1])
-        end_year = int(end_date.split("-")[-1])
+        from datetime import datetime
+        frmt = "%Y-%m-%d"
+        try:
+            start_year, end_year = datetime.strptime(start_date, frmt), datetime.strptime(end_date, frmt)
+        except ValueError:
+            start_year, end_year = self.min_date, self.max_date
+        
+#         start_year = int(start_date.split("-")[-1])
+#         end_year = int(end_date.split("-")[-1])
         
         in_range = (self.data.BeginISODate >= start_year) &\
                     (self.data.EndISODate <= end_year)
@@ -187,11 +202,11 @@ df["ObjectID"] = df.ObjectID.astype("int")
 df = df.set_index("ObjectID")
                 
         
-NMvW = Dataset(df, "NMvW_v0", 
-               "Nationaal Museum van Wereldculturen 1M",
-               "https://collectie.wereldculturen.nl/",
-               NMvW_params,
-               available_engines=[rand_engine])
+# NMvW = Dataset(df, "NMvW_v0", 
+#                "Nationaal Museum van Wereldculturen 1M",
+#                "https://collectie.wereldculturen.nl/",
+#                NMvW_params,
+#                available_engines=[rand_engine])
 
 
 
@@ -258,7 +273,7 @@ class Result:
                 "x": list(map(float, self.x.iloc[i])),
                 
                 "score": self.scores[i].item(),
-                "score_details": self.score_details[i]
+                "score_details": self.score_details.iloc[i]
             }
             
             yield obj_dict
